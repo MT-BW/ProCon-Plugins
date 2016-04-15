@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{6CD02872-5CFD-4379-94EA-970EFE7E804B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>ConsoleApplication</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Procon_Plugins</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InsaneLimits.cs" />
+    <Compile Include="Round 0 - Normal\OnRoundEnd.cs" />
+    <Compile Include="Round 0 - Normal\OnRoundStart.cs" />
+    <Compile Include="Round 1 - PistolsV2\Commands.cs" />
+    <Compile Include="Round 1 - PistolsV2\Enforcer.cs" />
+    <Compile Include="Archive\Pistols\Commands.cs" />
+    <Compile Include="Archive\Pistols\Enforcer.cs" />
+    <Compile Include="PluginBase.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Round 1 - PistolsV2\OnJoin.cs" />
+    <Compile Include="Round 1 - PistolsV2\OnRoundEnd.cs" />
+    <Compile Include="Round 1 - PistolsV2\OnRoundStart.cs" />
+    <Compile Include="Round 1 - PistolsV2\OnSpawn.cs" />
+    <Compile Include="Round 2 - Normal\OnRoundEnd.cs" />
+    <Compile Include="Round 2 - Normal\OnRoundStart.cs" />
+    <Compile Include="Round 3 - GunSlots\Commands.cs" />
+    <Compile Include="Round 3 - GunSlots\Enforcer.cs" />
+    <Compile Include="Round 3 - GunSlots\OnDeath.cs" />
+    <Compile Include="Round 3 - GunSlots\OnJoin.cs" />
+    <Compile Include="Round 3 - GunSlots\OnRoundEnd.cs" />
+    <Compile Include="Round 3 - GunSlots\OnRoundStart.cs" />
+    <Compile Include="Round 3 - GunSlots\OnSpawn.cs" />
+    <Compile Include="Round 4 - Normal\OnRoundEnd.cs" />
+    <Compile Include="Round 4 - Normal\OnRoundStart.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Procon-1-master\src\PRoCon.Core\PRoCon.Core.csproj">
+      <Project>{88912cb7-e755-476d-afc2-ca0c34a29465}</Project>
+      <Name>PRoCon.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="Procon-1-master\src\PRoCon\PRoCon.csproj">
+      <Project>{4a9d8238-7da4-4fb0-b0aa-9b6b01e425f0}</Project>
+      <Name>PRoCon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Round 5 - Evolution\" />
+    <Folder Include="Round 6 - Normal\" />
+    <Folder Include="Round 7 - Normal\" />
+    <Folder Include="Round 8 - Normal\" />
+    <Folder Include="Round 9 - Normal\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>
