@@ -7,6 +7,7 @@ using PRoConEvents;
 namespace Procon_Plugins.Round_3___GunSlots {
     class Enforcer : PluginBase {
 
+
         public static bool Code() {
 
             if( ! player.RoundData.issetBool( "hasBeenKnifed" ) ) {

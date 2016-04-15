@@ -7,6 +7,7 @@ namespace Procon_Plugins.Round_2___Normal {
 
         public static bool Code() {
 
+
             plugin.SendGlobalYell("Round 3 - Standard Conquest 3200", 30);
 
             return false;

@@ -8,6 +8,7 @@ namespace Procon_Plugins.Pistols {
 
         public static bool Code() {
 
+
             if ( Regex.Match(player.LastChat, @"^\!unlocks", RegexOptions.IgnoreCase).Success ) {
                 // string[] gunsToBreakChains = new string[] { "Melee", "U_Repairtool", "U_BallisticShield", "U_Defib" };
 

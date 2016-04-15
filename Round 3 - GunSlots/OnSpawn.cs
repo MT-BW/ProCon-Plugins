@@ -5,6 +5,7 @@ using System.Text;
 namespace Procon_Plugins.Round_3___GunSlots {
     class OnSpawn : PluginBase {
 
+
         public static bool Code() {
 
             if ( limit.Activations(player.Name) < 1 ) {

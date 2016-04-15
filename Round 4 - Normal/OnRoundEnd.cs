@@ -5,6 +5,7 @@ using System.Text;
 namespace Procon_Plugins.Round_4___Normal {
     class OnRoundEnd : PluginBase {
 
+
         public static bool Code() {
 
             plugin.SendGlobalYell("Next Round is Round 6 - Standard Conquest 3200", 30);

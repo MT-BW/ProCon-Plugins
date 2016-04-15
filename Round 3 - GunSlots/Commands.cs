@@ -10,6 +10,7 @@ namespace Procon_Plugins.Round_3___GunSlots {
         public static bool Code() {
 
 
+
             /****************************************************
             ** !Gunslots command
             ****************************************************/

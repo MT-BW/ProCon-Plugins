@@ -6,6 +6,7 @@ namespace Procon_Plugins.Round_3___GunSlots {
 
     class OnDeath : PluginBase {
 
+
         public static bool Code() {
 
             player.RoundData.setBool( "hasBeenKnifed", true );

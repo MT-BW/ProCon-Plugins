@@ -9,6 +9,7 @@ namespace Procon_Plugins.Pistols {
 
         public static bool Code() {
             
+
             var allowWeapons = new[] {
                     "U_SaddlegunSnp", "U_Glock18", "U_Handflare", "U_Flashbang", "U_M18", "U_M34", "U_Grenade_RGO", "U_V40",
                     "U_M67", "EODBot", "U_Unica6", "U_SW40", "U_DesertEagle", "U_Repairtool", "U_BallisticShield",

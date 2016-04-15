@@ -10,6 +10,7 @@ namespace Procon_Plugins.PistolsV2 {
         public static bool Code() {
 
 
+
             /****************************************************
             ** !Pistols command
             ****************************************************/

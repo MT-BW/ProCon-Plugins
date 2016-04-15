@@ -9,6 +9,7 @@ namespace Procon_Plugins.PistolsV2 {
 
         public static bool Code() {
 
+
             string[] allowPistolsSemi = new[] {
             "U_SaddlegunSnp", "U_DesertEagle", "U_HK45C", "U_CZ75", "U_FN57", "U_M1911", "U_M9", "U_MP443", "U_P226",
             "U_QSZ92"

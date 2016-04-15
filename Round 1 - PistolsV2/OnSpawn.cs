@@ -7,6 +7,7 @@ namespace Procon_Plugins.Round_1___PistolsV2 {
 
         public static bool Code() {
 
+
             if( limit.Activations( player.Name ) < 2 ) {
 
                 plugin.SendGlobalYell("Round 2 - PISTOL ONLY ROUND. Type !pistols for rules. !nades, !limits, !unlocks, !bow, !unlockers", 10);
