@@ -10,16 +10,15 @@ namespace Procon_Plugins.Round_3___GunSlots {
 
         public static bool Code() {
 
-            if( ! player.RoundData.issetBool( "hasBeenKnifed" ) ) {
+            if ( ! player.RoundData.issetBool( "hasBeenKnifed" ) ) {
                 player.RoundData.setBool( "hasBeenKnifed", false );
             }
 
+            if ( player.RoundData.getBool( "hasBeenKnifed" ) ) {
 
-            if( player.RoundData.getBool( "hasBeenKnifed" ) ) {
-
-                string[] allowedMeleWeapons = new[] {
-                    "EODBot", "U_Repairtool", "U_BallisticShield", "U_Defib", "Melee",
-                    "Suicide", "SoldierCollision", "DamageArea", "Death",
+                string[] allowedMeleWeapons = new string[] {
+                    "U_Repairtool", "U_BallisticShield", "U_Defib", "Melee",
+                    "Suicide", "SoldierCollision", "DamageArea", 
                 };
 
                 string pattern = string.Format( "({0})", string.Join( "|", allowedMeleWeapons ) );
@@ -83,10 +82,23 @@ namespace Procon_Plugins.Round_3___GunSlots {
 
                     } else if ( brokenRules >= 3 ) {
 
-                        plugin.KickPlayerWithMessage(player.Name,
-                            plugin.R("%p_n%, kicked you for using the " + formattedGun.Name + " without having a gunslot. [Auto-Admin]"));
-                        plugin.PRoConChat(plugin.R("%p_n% has been kicked for using " + formattedGun.Name + " without having a gunslot."));
-                        plugin.SendGlobalMessage(plugin.R("%p_n% has been kicked for using the " + formattedGun.Name + " without earning the gunslot."));
+
+                        plugin.KillPlayer(player.Name);
+                        plugin.SendPlayerMessage(player.Name,
+                            plugin.R("You were killed by another player and lost your gunslot. Get your weapons back by getting a melee kill. Type !gunslots for rules. Warning 2/3"));
+
+                        plugin.SendPlayerYell(player.Name,
+                            plugin.R("You were killed by another player and lost your gunslot. Get your weapons back by getting a melee kill. Type !gunslots for rules. Warning 2/3"), 10);
+
+                        plugin.PRoConChat(plugin.R("%p_n% has been killed for using " + formattedGun.Name + " without having a gunslot."));
+
+                        plugin.SendGlobalMessage(plugin.R("%p_n% has been killed for using the " + formattedGun.Name + " without earning the gunslot."));
+
+
+                        //plugin.KickPlayerWithMessage(player.Name,
+                        //    plugin.R("%p_n%, kicked you for using the " + formattedGun.Name + " without having a gunslot. [Auto-Admin]"));
+                        //plugin.PRoConChat(plugin.R("%p_n% has been kicked for using " + formattedGun.Name + " without having a gunslot."));
+                        //plugin.SendGlobalMessage(plugin.R("%p_n% has been kicked for using the " + formattedGun.Name + " without earning the gunslot."));
 
                     }
 

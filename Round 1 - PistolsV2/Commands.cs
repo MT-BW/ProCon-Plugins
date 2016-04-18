@@ -25,7 +25,7 @@ namespace Procon_Plugins.PistolsV2 {
                     plugin.R("Complete the !limits to unlock unlimited kills"));
 
                 plugin.SendPlayerMessage(player.Name,
-                    plugin.R("To unlock PDWS's, complete the !unlocks challenge."));
+                    plugin.R("To unlock PDW's, complete the !unlocks challenge."));
 
                 plugin.SendPlayerMessage(player.Name,
                     plugin.R("Grenades will be unlocked after 10 pistol kills"));
@@ -90,7 +90,7 @@ namespace Procon_Plugins.PistolsV2 {
                         plugin.R("You have not yet completed the challenge!"));
 
                     plugin.SendPlayerMessage(player.Name,
-                        plugin.R("You have " + reptool + "/5 kills with repair tool," + defib + "/5 kills with defibs. "));
+                        plugin.R("You have " + reptool + "/5 kills with reptool," + defib + "/5 kills with defibs. "));
 
                     plugin.SendPlayerMessage(player.Name,
                         plugin.R("Keep going!"));
@@ -108,8 +108,8 @@ namespace Procon_Plugins.PistolsV2 {
 
                 if ( !player.RoundData.issetBool("Unlocked") || !player.RoundData.getBool("Unlocked") ) {
 
-                    string[] gunsToKillWith = new[] {"U_SaddlegunSnp", "U_DesertEagle", "U_HK45C", "U_CZ75", "U_FN57", "U_M1911", "U_M9", "U_MP443", "U_P226",
-            "U_QSZ92","U_Glock18", "U_M93R","U_Unica6", "U_SW40", "U_Taurus44", "U_MP412Rex" };
+                    string[] gunsToKillWith = new string[] {"U_SaddlegunSnp", "U_DesertEagle" , "U_HK45C", "U_CZ75", "U_FN57", "U_M1911", "U_M9", "U_MP443", "U_P226",
+             "U_QSZ92","U_Glock18", "U_M93R","U_Unica6", "U_SW40", "U_Taurus44", "U_MP412Rex" };
 
                     plugin.SendPlayerMessage(player.Name,
                         plugin.R("I========= PDW UNLOCKS ==========I"));
@@ -124,11 +124,19 @@ namespace Procon_Plugins.PistolsV2 {
                             KillReasonInterface formattedGun = plugin.FriendlyWeaponName(gun);
 
                             guns += formattedGun.Name + "(" + player[ gun ].HeadshotsRound + "/3), ";
+
                         }
                     }
 
-                    plugin.SendPlayerMessage(player.Name,
-                        plugin.R(guns));
+                    int chunkSize = 50;
+                    int stringLength = guns.Length;
+                    for ( int i = 0; i < stringLength; i += chunkSize ) {
+                        if ( i + chunkSize > stringLength ) chunkSize = stringLength - i;
+                        plugin.SendPlayerMessage(player.Name, plugin.R(guns.Substring(i, chunkSize)));
+
+                    }
+
+                    
 
                     plugin.SendPlayerMessage(player.Name,
                         plugin.R("I==========================================I"));

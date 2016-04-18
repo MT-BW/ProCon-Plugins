@@ -9,35 +9,38 @@ namespace Procon_Plugins.PistolsV2 {
 
         public static bool Code() {
 
-
-            string[] allowPistolsSemi = new[] {
+            string[] allowPistolsSemi = new string[] {
             "U_SaddlegunSnp", "U_DesertEagle", "U_HK45C", "U_CZ75", "U_FN57", "U_M1911", "U_M9", "U_MP443", "U_P226",
             "U_QSZ92"
         };
-            string[] allowPistolsAuto = new[] { "U_Glock18", "U_M93R" };
-            string[] allowPistolsRevolver = new[] { "U_Unica6", "U_SW40", "U_Taurus44", "U_MP412Rex" };
+            string[] allowPistolsAuto = new string[] { "U_Glock18", "U_M93R" };
+            string[] allowPistolsRevolver = new string[] { "U_Unica6", "U_SW40", "U_Taurus44", "U_MP412Rex" };
 
-            string[] allowGrenades = new[] { "U_Handflare", "U_Flashbang", "U_M18", "U_M34", "U_Grenade_RGO", "U_V40", "U_M67" };
+            string[] allowGrenades = new string[] { "U_Handflare", "U_Flashbang", "U_M18", "U_M34", "U_Grenade_RGO", "U_V40", "U_M67" };
 
-            string[] allowOther = new[] {
+            string[] allowOther = new string[] {
             "EODBot", "U_Repairtool", "U_BallisticShield", "U_Defib", "Melee", "Suicide", "SoldierCollision",
-            "DamageArea",
-            "Death", "dlSHTR"
+            "DamageArea", "dlSHTR"
         };
 
-            string[] allowPdws = new[] { "U_MX4", "U_PP2000", "U_UMP45", "	U_UMP9", "U_CBJ-MS", "	U_MagpulPDR",
+            string[] allowPdws = new string[] { "U_MX4", "U_PP2000", "U_UMP45", "U_UMP9", "U_CBJ-MS", "	U_MagpulPDR",
             "U_Scorpion","U_JS2","U_Groza-4","U_ASVal","U_P90","U_MPX","U_MP7","U_SR2" };
 
-            string[] allowWeapons = new string[ allowPistolsSemi.Length + allowPistolsAuto.Length + allowPistolsRevolver.Length + allowGrenades.Length + allowOther.Length + allowPdws.Length ];
-            allowPistolsSemi.CopyTo(allowWeapons, 0);
-            allowPistolsAuto.CopyTo(allowWeapons, allowPistolsSemi.Length);
-            allowPistolsRevolver.CopyTo(allowWeapons, ( allowPistolsSemi.Length + allowPistolsAuto.Length ));
-            allowGrenades.CopyTo(allowWeapons, ( allowPistolsSemi.Length + allowPistolsAuto.Length + allowPistolsRevolver.Length ));
-            allowOther.CopyTo(allowWeapons, ( allowPistolsSemi.Length + allowPistolsAuto.Length + allowPistolsRevolver.Length + allowGrenades.Length ));
+            string pattern1 = string.Format("({0})", string.Join("|", allowPistolsSemi));
+            string pattern2 = string.Format("({0})", string.Join("|", allowPistolsAuto));
+            string pattern3 = string.Format("({0})", string.Join("|", allowPistolsRevolver));
+            string pattern4 = string.Format("({0})", string.Join("|", allowGrenades));
+            string pattern5 = string.Format("({0})", string.Join("|", allowOther));
+            string pattern6 = string.Format("({0})", string.Join("|", allowPdws));
 
-            string pattern = string.Format("({0})", string.Join("|", allowWeapons));
-
-            if ( kill.Weapon != "U_M98B" && Regex.Match(kill.Weapon, pattern, RegexOptions.IgnoreCase).Success ) {
+            if ( kill.Weapon != "U_M98B" && (
+                Regex.Match(kill.Weapon, pattern1, RegexOptions.IgnoreCase).Success ||
+                Regex.Match(kill.Weapon, pattern2, RegexOptions.IgnoreCase).Success ||
+                Regex.Match(kill.Weapon, pattern3, RegexOptions.IgnoreCase).Success ||
+                Regex.Match(kill.Weapon, pattern4, RegexOptions.IgnoreCase).Success ||
+                Regex.Match(kill.Weapon, pattern5, RegexOptions.IgnoreCase).Success ||
+                Regex.Match(kill.Weapon, pattern6, RegexOptions.IgnoreCase).Success
+                ) ) {
                 //This is a pistol kill.
 
                 if ( player.RoundData.issetBool("BrokenLimit") && player.RoundData.getBool("BrokenLimit") ) {
@@ -48,7 +51,7 @@ namespace Procon_Plugins.PistolsV2 {
                     ****************************************************/
                     int weaponLimit = 30;
 
-                    int[] warnAt = new[] { 20, 25 };
+                    int[] warnAt = new int[] { 20, 25 };
 
                     int currentWeaponCount = (int) player[ kill.Weapon ].KillsRound;
 
@@ -96,12 +99,12 @@ namespace Procon_Plugins.PistolsV2 {
                     ** Check for !limits unlock
                     ****************************************************/
 
-                    string[] gunsToBreakLimit = new[] { "U_Repairtool", "U_Defib" };
+                    string[] gunsToBreakLimit = new string[] { "U_Repairtool", "U_Defib" };
 
                     bool hasBrokenLimit = true;
 
                     foreach ( string gun in gunsToBreakLimit ) {
-                        if ( player[ gun ].KillsRound <= 5 ) {
+                        if ( player[ gun ].KillsRound < 3 ) {
                             hasBrokenLimit = false;
                             break;
                         }
@@ -180,15 +183,24 @@ namespace Procon_Plugins.PistolsV2 {
 
                 if ( !player.RoundData.issetBool("Unlocked") || !player.RoundData.getBool("Unlocked") ) {
 
-                    string[] gunsToKillWith = new string[ allowPistolsSemi.Length + allowPistolsAuto.Length + allowPistolsRevolver.Length + allowGrenades.Length + allowOther.Length + allowPdws.Length ];
-                    allowPistolsSemi.CopyTo(allowWeapons, 0);
-                    allowPistolsAuto.CopyTo(allowWeapons, allowPistolsSemi.Length);
-                    allowPistolsRevolver.CopyTo(allowWeapons, ( allowPistolsSemi.Length + allowPistolsAuto.Length ));
-
                     bool hasCompletedChallenge = true;
 
-                    foreach ( string gun in gunsToKillWith ) {
-                        if ( player[ gun ].HeadshotsRound < 3 ) {
+                    foreach ( string gun in allowPistolsSemi ) {
+                        if ( player[ gun ].HeadshotsRound < headshotsPerPistol ) {
+                            hasCompletedChallenge = false;
+                            break;
+                        }
+                    }
+
+                    foreach ( string gun in allowPistolsAuto ) {
+                        if ( player[ gun ].HeadshotsRound < headshotsPerPistol ) {
+                            hasCompletedChallenge = false;
+                            break;
+                        }
+                    }
+
+                    foreach ( string gun in allowPistolsRevolver ) {
+                        if ( player[ gun ].HeadshotsRound < headshotsPerPistol ) {
                             hasCompletedChallenge = false;
                             break;
                         }
