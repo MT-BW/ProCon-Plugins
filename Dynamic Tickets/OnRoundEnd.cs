@@ -26,13 +26,13 @@ namespace Procon_Plugins.Dynamic_Tickets {
             int roundTimeLimit = 100;
 
             if ( server.NextGamemode == "ConquestLarge0" ) { // CQ LARGE
-                gameModeCounter = 120; 
+                gameModeCounter = 125; 
 
                 plugin.ConsoleWrite("^2Setting vars.gameModeCounter to " + gameModeCounter + " for CQ LArge.");
                 plugin.ServerCommand("vars.gameModeCounter", gameModeCounter.ToString());
 
             } else if ( server.NextGamemode == "ConquestSmall0" ) { // CQ SMALL
-                gameModeCounter = 120;
+                gameModeCounter = 200;
 
                 plugin.ConsoleWrite("^2Setting vars.gameModeCounter to " + gameModeCounter + " for CQ small.");
                 plugin.ServerCommand("vars.gameModeCounter", gameModeCounter.ToString());
@@ -49,14 +49,14 @@ namespace Procon_Plugins.Dynamic_Tickets {
                 plugin.ConsoleWrite("^2Setting vars.gameModeCounter to " + gameModeCounter + " for Oblitteration.");
                 plugin.ServerCommand("vars.gameModeCounter", gameModeCounter.ToString());
 
-                roundTimeLimit = 65;
+                roundTimeLimit = 85;
 
                 plugin.ConsoleWrite("^2Setting vars.roundTimeLimit to " + roundTimeLimit + " for Obliteration.");
                 plugin.ServerCommand("vars.roundTimeLimit", roundTimeLimit.ToString());
 
             } else if ( server.NextGamemode == "Domination0" ) {  // DOMINATION
 
-                gameModeCounter = 400;
+                gameModeCounter = 200;
 
                 plugin.ConsoleWrite("^2Setting vars.gameModeCounter to " + gameModeCounter + " for Domination.");
                 plugin.ServerCommand("vars.gameModeCounter", gameModeCounter.ToString());
@@ -68,9 +68,9 @@ namespace Procon_Plugins.Dynamic_Tickets {
                 plugin.ConsoleWrite("^2Setting vars.gameModeCounter to " + gameModeCounter + " for TDM.");
                 plugin.ServerCommand("vars.gameModeCounter", gameModeCounter.ToString());
 
-            } else if ( server.NextGamemode == "ChainLink0" ) {  // Chainlink
+            } else if ( server.NextGamemode == "Chainlink0" ) {  // Chainlink
 
-                gameModeCounter = 400;
+                gameModeCounter = 300;
 
                 plugin.ConsoleWrite("^2Setting vars.gameModeCounter to " + gameModeCounter + " for Chainlink.");
                 plugin.ServerCommand("vars.gameModeCounter", gameModeCounter.ToString());

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dynamic Tickets\OnAnyChat.cs" />
     <Compile Include="Dynamic Tickets\OnIntervalServer.cs" />
     <Compile Include="Dynamic Tickets\OnRoundEnd.cs" />
     <Compile Include="Dynamic Tickets\OnRoundStart.cs" />
