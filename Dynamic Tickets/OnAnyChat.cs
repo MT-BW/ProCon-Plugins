@@ -26,6 +26,8 @@ namespace Procon_Plugins.Dynamic_Tickets
 
             }
 
+            return false;
+
         }
 
     }

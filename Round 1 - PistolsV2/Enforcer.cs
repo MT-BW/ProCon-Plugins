@@ -23,10 +23,15 @@ namespace Procon_Plugins.PistolsV2 {
         };
 
             string[] allowPdws = new string[] { "U_MX4", "U_PP2000", "U_UMP45", "U_UMP9", "U_CBJ-MS", "	U_MagpulPDR",
-            "U_Scorpion","U_JS2","U_Groza-4","U_ASVal","U_P90","U_MPX","U_MP7","U_SR2" };
+            "U_Scorpion","U_JS2","U_Groza-4","U_ASVal","U_P90","U_MPX","U_MP7","U_SR2","U_MagpulPDR" };
 
             string[] allowSnipers = new string[] { "U_CS-LR4", "U_M40A5", "U_Scout", "U_SV98", "U_JNG90", "U_SRS", "U_M98B", "U_M200", "U_FY-JS",
                                                    "U_GOL", "U_L96A1", "U_SR338", "U_CS5" };
+
+            string[] pistolUnlock = new string[] {
+                "U_Glock18", "U_M93R","U_HK45C", "U_CZ75", "U_FN57", "U_M1911", "U_M9", "U_MP443", "U_P226",
+                "U_QSZ92", "U_SaddlegunSnp", "U_Taurus44", "U_MP412Rex"
+            };
 
             string pattern1 = string.Format("({0})", string.Join("|", allowPistolsSemi));
             string pattern2 = string.Format("({0})", string.Join("|", allowPistolsAuto));
@@ -47,7 +52,7 @@ namespace Procon_Plugins.PistolsV2 {
                 //This is a pistol kill.
 
                 string pdwPattern = string.Format("({0})", string.Join("|", allowPdws));
-                string sniperPattern = string.Format("({0})", string.Join("|", allowPdws));
+                string sniperPattern = string.Format("({0})", string.Join("|", allowSnipers));
 
                 if ( player.RoundData.issetBool( "BrokenLimit" ) && player.RoundData.getBool( "BrokenLimit" ) ) {
                     // They've broken their chains, let them go mad
@@ -230,32 +235,37 @@ namespace Procon_Plugins.PistolsV2 {
                 ** Check for PDW !unlocks
                 ****************************************************/
 
-                int headshotsPerPistol = 3;
+                int headshotsPerPistol = 4;
+
+                //if (player.EAGuid == "EA_8FDC8F1A15FD5C54570E31127EB33BF8")
+                //{
+                //    headshotsPerPistol = 5;
+                //}
 
                 if ( !player.RoundData.issetBool("Unlocked") || !player.RoundData.getBool("Unlocked") ) {
 
                     bool hasCompletedChallenge = true;
 
-                    foreach ( string gun in allowPistolsSemi ) {
+                    foreach ( string gun in pistolUnlock) {
                         if ( player[ gun ].HeadshotsRound < headshotsPerPistol ) {
                             hasCompletedChallenge = false;
                             break;
                         }
                     }
 
-                    foreach ( string gun in allowPistolsAuto ) {
-                        if ( player[ gun ].HeadshotsRound < headshotsPerPistol ) {
-                            hasCompletedChallenge = false;
-                            break;
-                        }
-                    }
+                    //foreach ( string gun in allowPistolsAuto ) {
+                    //    if ( player[ gun ].HeadshotsRound < headshotsPerPistol ) {
+                    //        hasCompletedChallenge = false;
+                    //        break;
+                    //    }
+                    //}
 
-                    foreach ( string gun in allowPistolsRevolver ) {
-                        if ( player[ gun ].HeadshotsRound < headshotsPerPistol ) {
-                            hasCompletedChallenge = false;
-                            break;
-                        }
-                    }
+                    //foreach ( string gun in allowPistolsRevolver ) {
+                    //    if ( player[ gun ].HeadshotsRound < headshotsPerPistol ) {
+                    //        hasCompletedChallenge = false;
+                    //        break;
+                    //    }
+                    //}
 
                     if ( hasCompletedChallenge ) {
 
@@ -276,10 +286,10 @@ namespace Procon_Plugins.PistolsV2 {
                         plugin.SendPlayerYell(player.Name,
                             plugin.R("Congrats, you have just unlocked PDW's."), 5);
 
-                        plugin.SendGlobalMessage(plugin.R("!!!! %p_n% has completed the !unlocks challenge."));
-                        plugin.SendGlobalYell(plugin.R("!!!! %p_n% has completed the !unlocks challenge."),10);
+                        plugin.SendGlobalMessage(plugin.R("!!!! %p_n% has completed the !pdw challenge."));
+                        plugin.SendGlobalYell(plugin.R("!!!! %p_n% has completed the !pdw challenge."),10);
 
-                        plugin.PRoConChat(plugin.R("%p_n% completed the !unlock challenge."));
+                        plugin.PRoConChat(plugin.R("%p_n% completed the !pdw challenge."));
 
                     }
                 }
@@ -287,7 +297,7 @@ namespace Procon_Plugins.PistolsV2 {
                 /****************************************************
                 ** Check Phantom Bow Kills
                 ****************************************************/
-                int bowKillsUnlock = 20;
+                int bowKillsUnlock = 30;
 
                 if ( Regex.Match(kill.Weapon, @"(dlSHTR)", RegexOptions.IgnoreCase).Success ) {
 
@@ -400,7 +410,7 @@ namespace Procon_Plugins.PistolsV2 {
                 } else if ( brokenRules >= 3 ) {
 
                     plugin.KickPlayerWithMessage(player.Name,
-                        plugin.R("%p_n%, kicked you for using the " + formattedGun.Name + " on the pistol only round. [Auto-Admin]"));
+                      plugin.R("%p_n%, kicked you for using the " + formattedGun.Name + " on the pistol only round. [Auto-Admin]"));
                     plugin.PRoConChat(plugin.R("%p_n% has been kicked for using the " + formattedGun.Name + "."));
                     plugin.SendGlobalMessage(plugin.R("%p_n% has been kicked for using the " + formattedGun.Name + "."));
 

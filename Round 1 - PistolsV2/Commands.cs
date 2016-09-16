@@ -14,7 +14,7 @@ namespace Procon_Plugins.PistolsV2 {
             /****************************************************
             ** !Pistols command
             ****************************************************/
-            if ( Regex.Match(player.LastChat, @"^\!pistols", RegexOptions.IgnoreCase).Success ) {
+            if ( Regex.Match(player.LastChat, @"^\!pistol", RegexOptions.IgnoreCase).Success ) {
                 plugin.SendPlayerMessage(player.Name,
                     plugin.R("I=========== PISTOL ROUND RULES ===========I"));
 
@@ -22,31 +22,26 @@ namespace Procon_Plugins.PistolsV2 {
                     plugin.R("Maximum of 30 kills with each pistol."));
 
                 plugin.SendPlayerMessage(player.Name,
-                    plugin.R("Complete the !limits to unlock unlimited kills"));
+                    plugin.R("Complete the !limits to unlock unlimited kills."));
 
                 plugin.SendPlayerMessage(player.Name,
-                    plugin.R("Grenades will be unlocked after 20 pistol kills"));
+                    plugin.R("Grenades will be unlocked by 20 pistol kills (!nades)."));
 
                 plugin.SendPlayerMessage(player.Name,
-                    plugin.R("To unlock PDW's, type !pdws"));
+                    plugin.R("Weapon Unlocks: !pdw, !sniper, !bow"));
 
-                plugin.SendPlayerMessage(player.Name,
-                    plugin.R("To unlock sniper rifles, type !sniper"));
-
-                plugin.SendPlayerMessage(player.Name,
-                    plugin.R("Commands: !nades,!bow,!sniper,!pdws,!limits,!unlockers"));
             }
 
             /****************************************************
             ** !Nades command
             ****************************************************/
-            if ( Regex.Match(player.LastChat, @"^\!nades", RegexOptions.IgnoreCase).Success ) {
+            if ( Regex.Match(player.LastChat, @"^\!nade", RegexOptions.IgnoreCase).Success ) {
                 if ( player.KillsRound >= 20 ) {
                     plugin.SendPlayerMessage(player.Name,
                         plugin.R("I=========== GRENADES ===========I"));
 
                     plugin.SendPlayerMessage(player.Name,
-                        plugin.R("You have unlocked grenades"));
+                        plugin.R("You have unlocked grenades."));
 
                     plugin.SendPlayerMessage(player.Name,
                         plugin.R("I==========================================I"));
@@ -68,12 +63,12 @@ namespace Procon_Plugins.PistolsV2 {
             /****************************************************
             ** !Limits command
             ****************************************************/
-            if ( Regex.Match(player.LastChat, @"^\!limits", RegexOptions.IgnoreCase).Success ) {
+            if ( Regex.Match(player.LastChat, @"^\!limit", RegexOptions.IgnoreCase).Success ) {
 
                 int reptool = (int) player[ "U_Repairtool" ].KillsRound;
                 int defib = (int) player[ "U_Defib" ].KillsRound;
 
-                if ( reptool >= 2 && defib >= 2 ) {
+                if ( reptool >= 3 && defib >= 3 ) {
                     plugin.SendPlayerMessage(player.Name,
                         plugin.R("I============ LIMITS  ============I"));
 
@@ -90,7 +85,7 @@ namespace Procon_Plugins.PistolsV2 {
                         plugin.R("You have not yet completed the challenge!"));
 
                     plugin.SendPlayerMessage(player.Name,
-                        plugin.R("You have " + reptool + "/2 kills with reptool," + defib + "/2 kills with defibs. "));
+                        plugin.R("You have " + reptool + "/3 kills with reptool, " + defib + "/3 kills with defibs. "));
 
                     plugin.SendPlayerMessage(player.Name,
                         plugin.R("Keep going!"));
@@ -103,26 +98,36 @@ namespace Procon_Plugins.PistolsV2 {
             /****************************************************
             ** !Unlocks command
             ****************************************************/
-            if ( Regex.Match(player.LastChat, @"^\!pdws", RegexOptions.IgnoreCase).Success ) {
+            if ( Regex.Match(player.LastChat, @"^\!pdw", RegexOptions.IgnoreCase).Success ) {
 
 
                 if ( !player.RoundData.issetBool("Unlocked") || !player.RoundData.getBool("Unlocked") ) {
 
-                    string[] gunsToKillWith = new string[] {"U_SaddlegunSnp", "U_DesertEagle" , "U_HK45C", "U_CZ75", "U_FN57", "U_M1911", "U_M9", "U_MP443", "U_P226",
-             "U_QSZ92","U_Glock18", "U_M93R","U_Unica6", "U_SW40", "U_Taurus44", "U_MP412Rex" };
+             //       string[] gunsToKillWith = new string[] {"U_SaddlegunSnp", "U_DesertEagle" , "U_HK45C", "U_CZ75", "U_FN57", "U_M1911", "U_M9", "U_MP443", "U_P226",
+             //"U_QSZ92","U_Glock18", "U_M93R","U_Unica6", "U_SW40", "U_Taurus44", "U_MP412Rex" };
+                    string[] gunsToKillWith = new string[] {
+                "U_Glock18", "U_M93R","U_HK45C", "U_CZ75", "U_FN57", "U_M1911", "U_M9", "U_MP443", "U_P226",
+                "U_QSZ92", "U_SaddlegunSnp", "U_Taurus44", "U_MP412Rex"
+            };
+
+                    int headshotsRequired = 4;
+
+                    //if( player.EAGuid == "EA_8FDC8F1A15FD5C54570E31127EB33BF8" ) {
+                    //    headshotsRequired = 5;
+                    //}
 
                     plugin.SendPlayerMessage(player.Name, plugin.R("I========= PDW UNLOCKS ==========I"));
 
-                    plugin.SendPlayerMessage(player.Name, plugin.R("Remaining guns to get 3 headshots with:"));
+                    plugin.SendPlayerMessage(player.Name, plugin.R("Remaining guns to get " + headshotsRequired + " headshots with:"));
 
                     string guns = "";
 
                     foreach ( string gun in gunsToKillWith ) {
-                        if ( player[ gun ].HeadshotsRound < 3 ) {
+                        if ( player[ gun ].HeadshotsRound < headshotsRequired) {
 
                             KillReasonInterface formattedGun = plugin.FriendlyWeaponName(gun);
 
-                            guns += formattedGun.Name + "(" + player[ gun ].HeadshotsRound + "/3), ";
+                            guns += formattedGun.Name + "(" + player[ gun ].HeadshotsRound + "/"+headshotsRequired+"), ";
 
                         }
                     }
@@ -176,7 +181,7 @@ namespace Procon_Plugins.PistolsV2 {
                         plugin.R("You haven't unlocked the bow yet!"));
 
                     plugin.SendPlayerMessage(player.Name,
-                        plugin.R(player.KillsRound + "/20 kills done"));
+                        plugin.R(player.KillsRound + "/20 kills done."));
 
                     plugin.SendPlayerMessage(player.Name,
                         plugin.R("Keep going!"));
@@ -224,7 +229,7 @@ namespace Procon_Plugins.PistolsV2 {
                         plugin.R("Type !bow for your progress."));
 
                     plugin.SendPlayerMessage(player.Name,
-                        plugin.R("When it's unlocked, you must get 10 headshots with it"));
+                        plugin.R("When it's unlocked, you must get 10 headshots with it."));
 
                     plugin.SendPlayerMessage(player.Name,
                         plugin.R("I==========================================I"));
@@ -234,7 +239,7 @@ namespace Procon_Plugins.PistolsV2 {
             /****************************************************
             ** !Unlockers command
             ****************************************************/
-            if ( Regex.Match(player.LastChat, @"^\!unlockers", RegexOptions.IgnoreCase).Success ) {
+            if ( Regex.Match(player.LastChat, @"^\!unlocker", RegexOptions.IgnoreCase).Success ) {
 
                 if ( !plugin.RoundData.issetString("UnlockPlayers") ) {
                     plugin.RoundData.setString("UnlockPlayers", "");
