@@ -15,7 +15,7 @@ namespace Procon_Plugins.PistolsV2 {
             string[] allowPistolsAuto = new string[] { "U_Glock18", "U_M93R" };
             string[] allowPistolsRevolver = new string[] { "U_Unica6", "U_SW40", "U_Taurus44", "U_MP412Rex" };
 
-            string[] allowGrenades = new string[] { "U_Handflare", "U_Flashbang", "U_M18", /*"U_M34",*/ "U_Grenade_RGO", "U_V40", "U_M67" };
+            string[] allowGrenades = new string[] { "U_Handflare", "U_Flashbang", "U_M18", "U_M34", "U_Grenade_RGO", "U_V40", "U_M67" };
 
             string[] allowOther = new string[] {
             "EODBot", "U_Repairtool", "U_BallisticShield", "U_Defib", "Melee", "Suicide", "SoldierCollision",
@@ -54,9 +54,7 @@ namespace Procon_Plugins.PistolsV2 {
                 string pdwPattern = string.Format("({0})", string.Join("|", allowPdws));
                 string sniperPattern = string.Format("({0})", string.Join("|", allowSnipers));
 
-                if ( player.RoundData.issetBool( "BrokenLimit" ) && player.RoundData.getBool( "BrokenLimit" ) ) {
-                    // They've broken their chains, let them go mad
-                }else if( Regex.Match(kill.Weapon, pdwPattern, RegexOptions.IgnoreCase).Success ) {
+                if( Regex.Match(kill.Weapon, pdwPattern, RegexOptions.IgnoreCase).Success ) {
 
                     /****************************************************
                     ** Check for PDW kill
@@ -78,122 +76,160 @@ namespace Procon_Plugins.PistolsV2 {
 
                     }
 
-                } else if ( Regex.Match(kill.Weapon, sniperPattern, RegexOptions.IgnoreCase).Success ) {
+                } else if( Regex.Match( kill.Weapon, sniperPattern, RegexOptions.IgnoreCase ).Success ) {
 
                     /****************************************************
                     ** Check for Sniper kill
                     ****************************************************/
-                    if ( player.RoundData.issetBool("UnlockedSniper") && player.RoundData.getBool("UnlockedSniper") ) {
+                    if( player.RoundData.issetBool( "UnlockedSniper" ) && player.RoundData.getBool( "UnlockedSniper" ) ) {
 
                         // They've unlocked it.. all is good
 
                     } else {
-                        plugin.KillPlayer(player.Name);
-                        plugin.SendPlayerMessage(player.Name,
-                            plugin.R("You must unlock sniper rifles before you can use them. To do this type !sniper."));
+                        plugin.KillPlayer( player.Name );
+                        plugin.SendPlayerMessage(
+                                                 player.Name,
+                            plugin.R(
+                                     "You must unlock sniper rifles before you can use them. To do this type !sniper." ) );
 
-                        plugin.SendPlayerYell(player.Name, plugin.R("You must unlock snipe rifles before you can use them. To do this type !sniper."), 10);
+                        plugin.SendPlayerYell(
+                                              player.Name,
+                            plugin.R( "You must unlock snipe rifles before you can use them. To do this type !sniper." ),
+                            10 );
 
-                        plugin.SendGlobalMessage(plugin.R("%p_n% has been killed for using a sniper rifle without unlocking it."));
+                        plugin.SendGlobalMessage(
+                                                 plugin.R(
+                                                          "%p_n% has been killed for using a sniper rifle without unlocking it." ) );
 
-                        plugin.PRoConChat(plugin.R("%p_n% killed for using a sniper rifle without unlocking it."));
+                        plugin.PRoConChat( plugin.R( "%p_n% killed for using a sniper rifle without unlocking it." ) );
 
                     }
 
                 } else {
-                    /****************************************************
-                    ** Individual Weapon Limits
-                    ****************************************************/
-                    int weaponLimit = 30;
 
-                    int[] warnAt = new int[] { 20, 25 };
+                    if( player.RoundData.issetBool( "BrokenLimit" ) && player.RoundData.getBool( "BrokenLimit" ) ) {
+                        // They've broken their chains, let them go mad
+                    } else {
 
-                    int currentWeaponCount = (int) player[ kill.Weapon ].KillsRound;
+                        /****************************************************
+                        ** Individual Weapon Limits
+                        ****************************************************/
+                        int weaponLimit = 30;
 
-                    KillReasonInterface formattedGun = plugin.FriendlyWeaponName(kill.Weapon);
+                        int[] warnAt = new int[] { 20, 25 };
 
-                    if ( Array.IndexOf(warnAt, currentWeaponCount) > -1 ) {
-                        plugin.SendPlayerMessage(player.Name,
-                            plugin.R("You have " + currentWeaponCount + "/" + weaponLimit +
-                                      " kills with the " + formattedGun.Name + ". To unlock this weapon beyond " + weaponLimit +
-                                      " kills, complete the round challenge with !limits."));
+                        int currentWeaponCount = (int)player[ kill.Weapon ].KillsRound;
 
-                        plugin.SendPlayerYell(player.Name,
-                            plugin.R("You have " + currentWeaponCount + "/" + weaponLimit +
-                                      " kills with the " + formattedGun.Name + ". To unlock this weapon beyond " + weaponLimit +
-                                      " kills, complete the round challenge with !limits."), 5);
-                    }
+                        KillReasonInterface formattedGun = plugin.FriendlyWeaponName( kill.Weapon );
 
-                    if ( currentWeaponCount == weaponLimit ) {
-                        plugin.SendPlayerMessage(player.Name,
-                            plugin.R("You have " + currentWeaponCount + "/" + weaponLimit +
-                                      " kills with the " + formattedGun.Name + ". If you use this weapon again you will be auto-killed. To unlock this weapon beyond " +
-                                      weaponLimit + " kills, complete the round challenge with !limits."));
+                        if( Array.IndexOf( warnAt, currentWeaponCount ) > -1 ) {
+                            plugin.SendPlayerMessage(
+                                                     player.Name,
+                                plugin.R(
+                                         "You have " + currentWeaponCount + "/" + weaponLimit + " kills with the "
+                                         + formattedGun.Name + ". To unlock this weapon beyond " + weaponLimit
+                                         + " kills, complete the round challenge with !limits." ) );
 
-                        plugin.SendPlayerYell(player.Name,
-                            plugin.R("You have " + currentWeaponCount + "/" + weaponLimit +
-                                      " kills with the " + formattedGun.Name + ". If you use this weapon again you will be auto-killed. To unlock this weapon beyond " +
-                                      weaponLimit + " kills, complete the round challenge with !limits."), 5);
-                    }
+                            plugin.SendPlayerYell(
+                                                  player.Name,
+                                plugin.R(
+                                         "You have " + currentWeaponCount + "/" + weaponLimit + " kills with the "
+                                         + formattedGun.Name + ". To unlock this weapon beyond " + weaponLimit
+                                         + " kills, complete the round challenge with !limits." ),
+                                5 );
+                        }
 
-                    if ( currentWeaponCount > weaponLimit ) {
-                        plugin.KillPlayer(player.Name);
-                        plugin.SendPlayerMessage(player.Name,
-                            plugin.R("You have reached the kill limit on the " + formattedGun.Name + ". To unlock this weapon beyond " +
-                                      weaponLimit + " kills, complete the round challenge with !limits."));
+                        if( currentWeaponCount == weaponLimit ) {
+                            plugin.SendPlayerMessage(
+                                                     player.Name,
+                                plugin.R(
+                                         "You have " + currentWeaponCount + "/" + weaponLimit + " kills with the "
+                                         + formattedGun.Name
+                                         + ". If you use this weapon again you will be auto-killed. To unlock this weapon beyond "
+                                         + weaponLimit + " kills, complete the round challenge with !limits." ) );
 
-                        plugin.SendPlayerYell(player.Name,
-                            plugin.R("You have reached the kill limit on the " + formattedGun.Name + ". To unlock this weapon beyond " +
-                                      weaponLimit + " kills, complete the round challenge with !limits."), 10);
+                            plugin.SendPlayerYell(
+                                                  player.Name,
+                                plugin.R(
+                                         "You have " + currentWeaponCount + "/" + weaponLimit + " kills with the "
+                                         + formattedGun.Name
+                                         + ". If you use this weapon again you will be auto-killed. To unlock this weapon beyond "
+                                         + weaponLimit + " kills, complete the round challenge with !limits." ),
+                                5 );
+                        }
 
-                        plugin.PRoConChat(plugin.R("%p_n% has reached the weapon limit with the " + formattedGun.Name + "."));
+                        if( currentWeaponCount > weaponLimit ) {
+                            plugin.KillPlayer( player.Name );
+                            plugin.SendPlayerMessage(
+                                                     player.Name,
+                                plugin.R(
+                                         "You have reached the kill limit on the " + formattedGun.Name
+                                         + ". To unlock this weapon beyond " + weaponLimit
+                                         + " kills, complete the round challenge with !limits." ) );
 
-                    }
+                            plugin.SendPlayerYell(
+                                                  player.Name,
+                                plugin.R(
+                                         "You have reached the kill limit on the " + formattedGun.Name
+                                         + ". To unlock this weapon beyond " + weaponLimit
+                                         + " kills, complete the round challenge with !limits." ),
+                                10 );
 
-                    /****************************************************
+                            plugin.PRoConChat(
+                                              plugin.R(
+                                                       "%p_n% has reached the weapon limit with the "
+                                                       + formattedGun.Name + "." ) );
+
+                        }
+
+                        /****************************************************
                     ** Check for !limits unlock
                     ****************************************************/
 
-                    string[] gunsToBreakLimit = new string[] { "U_Repairtool", "U_Defib" };
+                        string[] gunsToBreakLimit = new string[] { "U_Repairtool", "U_Defib" };
 
-                    bool hasBrokenLimit = true;
+                        bool hasBrokenLimit = true;
 
-                    foreach ( string gun in gunsToBreakLimit ) {
-                        if ( player[ gun ].KillsRound < 3 ) {
-                            hasBrokenLimit = false;
-                            break;
+                        foreach( string gun in gunsToBreakLimit ) {
+                            if( player[ gun ].KillsRound < 3 ) {
+                                hasBrokenLimit = false;
+                                break;
+                            }
+                        }
+
+                        if( hasBrokenLimit ) {
+
+                            if( !plugin.RoundData.issetString( "LimitPlayers" ) ) {
+                                plugin.RoundData.setString( "LimitPlayers", "" );
+                            }
+
+                            string limitPlayers = plugin.RoundData.getString( "LimitPlayers" );
+
+                            limitPlayers += player.Name + "|";
+
+                            plugin.RoundData.setString( "LimitPlayers", limitPlayers );
+
+                            player.RoundData.setBool( "BrokenLimit", true );
+
+                            plugin.SendPlayerMessage(
+                                                     player.Name,
+                                plugin.R(
+                                         "You have completed the limit unlock for this round, you may now use any allowed gun without limits." ) );
+
+                            plugin.SendPlayerYell(
+                                                  player.Name,
+                                plugin.R(
+                                         "You have completed the limit unlock for this round, you may now use any allowed gun without limits." ),
+                                5 );
+
+                            plugin.SendGlobalMessage( plugin.R( "!!!! %p_n% has completed the !limits challenge." ) );
+                            plugin.SendGlobalYell( plugin.R( "!!!! %p_n% has completed the !limits challenge." ), 10 );
+
+                            plugin.PRoConChat( plugin.R( "%p_n% completed the !limits challenge." ) );
+
                         }
                     }
 
-                    if ( hasBrokenLimit ) {
-
-                        if ( !plugin.RoundData.issetString("LimitPlayers") ) {
-                            plugin.RoundData.setString("LimitPlayers", "");
-                        }
-
-                        string limitPlayers = plugin.RoundData.getString("LimitPlayers");
-
-                        limitPlayers += player.Name + "|";
-
-                        plugin.RoundData.setString("LimitPlayers", limitPlayers);
-
-                        player.RoundData.setBool("BrokenLimit", true);
-
-                        plugin.SendPlayerMessage(player.Name,
-                            plugin.R(
-                                     "You have completed the limit unlock for this round, you may now use any allowed gun without limits."));
-
-                        plugin.SendPlayerYell(player.Name,
-                            plugin.R(
-                                     "You have completed the limit unlock for this round, you may now use any allowed gun without limits."),
-                            5);
-
-                        plugin.SendGlobalMessage(plugin.R("!!!! %p_n% has completed the !limits challenge."));
-                        plugin.SendGlobalYell(plugin.R("!!!! %p_n% has completed the !limits challenge."),10);
-
-                        plugin.PRoConChat(plugin.R("%p_n% completed the !limits challenge."));
-
-                    }
                 }
 
                 /****************************************************
